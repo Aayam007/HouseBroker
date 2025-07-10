@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace HouseBroker.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class firstmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -213,6 +215,16 @@ namespace HouseBroker.Infrastructure.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "CommissionRates",
+                columns: new[] { "Id", "CreatedAt", "Description", "IsActive", "IsDeleted", "MaxPrice", "MinPrice", "RatePercentage", "UpdatedAt" },
+                values: new object[,]
+                {
+                    { new Guid("11111111-1111-1111-1111-111111111111"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "2% for price < 50,00,000", true, false, 5000000m, 0m, 2.0m, null },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "1.75% for 50,00,000 <= price <= 1 crore", true, false, 10000000m, 5000000m, 1.75m, null },
+                    { new Guid("33333333-3333-3333-3333-333333333333"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "1.5% for price > 1 crore", true, false, null, 10000000m, 1.5m, null }
                 });
 
             migrationBuilder.CreateIndex(

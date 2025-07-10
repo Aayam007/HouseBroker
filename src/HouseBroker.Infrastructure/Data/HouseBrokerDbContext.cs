@@ -53,6 +53,37 @@ public class HouseBrokerDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.MaxPrice).HasColumnType("decimal(18,2)");
             entity.Property(e => e.RatePercentage).IsRequired().HasColumnType("decimal(5,2)");
             entity.Property(e => e.Description).IsRequired().HasMaxLength(100);
+
+            // Seed default commission rates
+            entity.HasData(
+                new CommissionRate
+                {
+                    Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                    MinPrice = 0m,
+                    MaxPrice = 5000000m,
+                    RatePercentage = 2.0m,
+                    Description = "2% for price < 50,00,000",
+                    IsActive = true
+                },
+                new CommissionRate
+                {
+                    Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                    MinPrice = 5000000m,
+                    MaxPrice = 10000000m,
+                    RatePercentage = 1.75m,
+                    Description = "1.75% for 50,00,000 <= price <= 1 crore",
+                    IsActive = true
+                },
+                new CommissionRate
+                {
+                    Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                    MinPrice = 10000000m,
+                    MaxPrice = null,
+                    RatePercentage = 1.5m,
+                    Description = "1.5% for price > 1 crore",
+                    IsActive = true
+                }
+            );
         });
     }
 }

@@ -73,13 +73,13 @@ var app = builder.Build();
 // Seed roles and migrate database
 using (var scope = app.Services.CreateScope())
 {
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     var dbContext = scope.ServiceProvider.GetRequiredService<HouseBrokerDbContext>();
-    
     // Apply database migrations
     await dbContext.Database.MigrateAsync();
-    
-    // Seed roles
+    // Ensure changes are committed before seeding roles
+    await dbContext.SaveChangesAsync();
+
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
     string[] roles = ["Broker", "Seeker"];
     foreach (var role in roles)
     {
